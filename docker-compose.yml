@@ -1,0 +1,33 @@
+version: "3.0"
+services:
+  api:
+    build:
+      context: ../Api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    volumes:
+      - ../Api:/app
+      - /app/bin
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ../Frontend 
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../Frontend:/app
+      - /app/node_modules 
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
