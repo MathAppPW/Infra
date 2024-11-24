@@ -1,0 +1,29 @@
+#Buduje cały system z kodu w trybie produkcyjnym (nie korzysta z przygotowanych wcześniej kontenerów), tylko do testowania, choć jak dobrze pójdzie nie trzeba
+#będzie go użyć nigdy
+services:
+  api:
+    build:
+      context: ../Api
+      dockerfile: Dockerfile.prod
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - frontend_network
+
+  frontend:
+    build:
+      context: ../Frontend 
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_API_URL=http://api:5000
+    networks:
+      - frontend_network
+
+networks:
+  frontend_network:
+

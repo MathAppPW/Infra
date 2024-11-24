@@ -1,0 +1,16 @@
+#do testowania API nie buduje frontendu
+services:
+  api:
+    build:
+      context: ../Api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
