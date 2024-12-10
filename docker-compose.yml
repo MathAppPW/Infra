@@ -1,21 +1,33 @@
-#buduje cały system w jednej sieci, zakładając, że nie zkonfigurujemy chmury, może być wykorzystane jako "stage"
-#frontend jest w jednej wewnętrzej sieci z API a cały backend włącznie z API w drugiej
+#defaultowy plik, może być zbudowany z docker-compose up
+#buduje backend z kontenerów i stawia frontend w trybie 'hot reload' (zmiany w plikach źródłowych są automatycznie przenoszone)
+#na frontend
+
 services:
   api:
     image: ghcr.io/mathapppw/api:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=HTTP://0.0.0.0:5000
     networks:
       - frontend_network
 
   frontend:
-    image: ghcr.io/mathapppw/frontend:latest
+    build:
+      context: ../Frontend 
+      dockerfile: Dockerfile
     ports:
-      - "3001:80"
+      - "5123:3000"
+    volumes:
+      - ../Frontend:/app
+      - /app/node_modules
     environment:
+      - CHOKIDAR_USEPOLLING=true
       - REACT_APP_API_URL=http://api:5000
     networks:
       - frontend_network
+    depends_on:
+      - api
 
 networks:
   frontend_network:
+

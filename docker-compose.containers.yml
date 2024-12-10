@@ -1,0 +1,21 @@
+#buduje cały system w jednej sieci, zakładając, że nie zkonfigurujemy chmury, może być wykorzystane jako "stage"
+#frontend jest w jednej wewnętrzej sieci z API a cały backend włącznie z API w drugiej
+services:
+  api:
+    image: ghcr.io/mathapppw/api:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - frontend_network
+
+  frontend:
+    image: ghcr.io/mathapppw/frontend:latest
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_API_URL=http://api:5000
+    networks:
+      - frontend_network
+
+networks:
+  frontend_network:
