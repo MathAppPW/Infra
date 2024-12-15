@@ -41,17 +41,19 @@ Korzystanie z tego systemu budowania właściwie nie wymaga od ciebie instalacji
 repozytoriów innych niż frontend. Warto pilnować aby repozytorium Infra było 
 cały czas aktualne na twoim komputerze.
 
-Wchodzimy do katalogu Infra i używamy komendy `docker-compose up`. 
-Frontend odpali sie z kodu na twoim komputerze w trybie hot reload -- zmiany w kodzie są natychmiastowo odzwierciedlane. Hot reload ma pewne limity, jeżeli
-na nie natraficie wyłączcie kontener i włączcie go znowu z opcją `docker-compose up --build`.
-Ponieważ coś sie psuje i u mnie nie mogłem odpalić frontendu na porcie 3000, macie do niego dostęp na porcie 3001 (localhost:3001).
+Wchodzimy do katalogu Infra i używamy komendy `docker-compose up`. Ponieważ nie da się postawić normalnie frontendowego kontenera, z docker-compose w hot reload to zrezygnowałem z
+tego pomysłu. Api odpali się na waszym lokalnym porcie 5000.
 
 Dostęp do api z frontendu macie za pomocą stałej:
 `process.env.REACT_APP_API_URL`.
-Polecam zrobić sobie po prostu `const apiUrl = process.env.REACT_APP_API_URL;`. Na razie nie przewidziałem żebyście mieli dostęp do api w jakiś inny sposób, je uznacie to za potrzebne mogę to zrobić.
+Polecam zrobić sobie po prostu `const apiUrl = process.env.REACT_APP_API_URL;`. Korzystajcie z niej zamiast z hardcodowanego lokalnego portu bo potem nie będzie trzeba nic zmieniać
+na produkcji.
 
 #### UWAGA
-Jeżeli zdecydujecie się dodać do waszego projektu coś co ma swój własny system budowania np. tailwind, POWIEDZCIE MI BO TRZEBA BĘDZIE ZMENIĆ DOCKERFILE, nie ruszajcie plików dockera oraz katalogu `.github`.
+PO ZPUSHOWANIU DO MAINA SPRAWDŹCIE CZY PRZESZŁO GITHUB ACTIONS (budowanie kontenera i pushowanie do rejestru), jeżeli nie spróbujcie zdebugować, jak się nie udało to zgłoście.
+
+Jeżeli zdecydujecie się dodać do waszego projektu coś co ma swój własny system budowania np. tailwind, POWIEDZCIE MI BO TRZEBA BĘDZIE ZMENIĆ DOCKERFILE, nie ruszajcie plików dockera 
+oraz katalogu `.github`. 
 
 ### Backend
 Ogólnie to samo (chyba) z tym, że odpalamy `docker-compose -f 

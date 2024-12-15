@@ -1,33 +1,14 @@
-#defaultowy plik, może być zbudowany z docker-compose up
-#buduje backend z kontenerów i stawia frontend w trybie 'hot reload' (zmiany w plikach źródłowych są automatycznie przenoszone)
-#na frontend
-
+#do testowania API nie buduje frontendu
 services:
   api:
     image: ghcr.io/mathapppw/api:latest
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=HTTP://0.0.0.0:5000
-    networks:
-      - frontend_network
-
-  frontend:
-    build:
-      context: ../Frontend 
-      dockerfile: Dockerfile
     ports:
-      - "5123:3000"
-    volumes:
-      - ../Frontend:/app
-      - /app/node_modules
+      - "5000:5000"
     environment:
-      - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_API_URL=http://api:5000
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
-      - frontend_network
-    depends_on:
-      - api
+      - backend_network
 
 networks:
-  frontend_network:
-
+  backend_network:
